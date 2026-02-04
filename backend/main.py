@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -11,6 +11,7 @@ from export_service import aggregate_data, generate_excel_export
 import jwt
 
 app = FastAPI(title="OpsNexus API")
+router = APIRouter()
 
 # Setup CORS
 origins = [
@@ -47,7 +48,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         raise credentials_exception
     return user
 
-@app.post("/token")
+@router.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
@@ -59,7 +60,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     access_token = create_access_token(data={"sub": user["username"]})
     return {"access_token": access_token, "token_type": "bearer"}
 
-@app.get("/dashboard")
+@router.get("/dashboard")
 async def get_dashboard_data(
     start_date: str = "2023-01-01", 
     end_date: str = "2023-12-31", 
@@ -81,7 +82,7 @@ async def get_dashboard_data(
         "tickets": tickets
     }
 
-@app.get("/export")
+@router.get("/export")
 async def export_data(
     current_user: dict = Depends(get_current_user)
 ):
@@ -99,6 +100,8 @@ async def export_data(
         headers={"Content-Disposition": "attachment; filename=OpsNexus_Report.xlsx"}
     )
 
-@app.get("/")
+@router.get("/")
 def read_root():
     return {"message": "Agent Backend is running"}
+
+app.include_router(router, prefix="/api")

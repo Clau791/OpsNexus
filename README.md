@@ -56,6 +56,24 @@ To log in to the dashboard, use the following mock credentials:
 - **Username:** `admin`
 - **Password:** `password123`
 
+## 🤝 Cum să folosești acest proiect (Clone/Fork)
+Dacă vrei să copiezi acest proiect pe propriul tău cont de GitHub:
+
+### Varianta 1: Fork (Recomandat pentru contribuții)
+1. Apasă butonul **Fork** din dreapta sus a paginii GitHub.
+2. Clonează noul repo creat pe contul tău:
+   ```bash
+   git clone https://github.com/USERNAME/OpsNexus.git
+   ```
+
+### Varianta 2: Clonare și mutare pe cont propriu (Pentru proiect nou)
+Dacă vrei să pornești un proiect nou bazat pe acesta:
+
+```bash
+# 1. Clonează repo-ul original
+e
+```
+
 ## 📁 Project Structure
 ```
 /
