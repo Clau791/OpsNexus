@@ -47,6 +47,9 @@ npm run dev
 ```
 *App runs at: http://localhost:5173*
 
+## ☁️ Deployment
+Ready to go live? Check out our [Deployment Guide](DEPLOYMENT.md) for instructions on hosting with Vercel.
+
 ## 🔑 Demo Credentials
 To log in to the dashboard, use the following mock credentials:
 

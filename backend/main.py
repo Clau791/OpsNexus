@@ -7,7 +7,7 @@ import io
 
 from auth import authenticate_user, create_access_token, ALGORITHM, SECRET_KEY, FAKE_USERS_DB
 from api_integrations import get_nagios_alerts, get_optimum_tickets
-from export_service import aggregate_data, generate_csv_export
+from export_service import aggregate_data, generate_excel_export
 import jwt
 
 app = FastAPI(title="OpsNexus API")
@@ -16,6 +16,7 @@ app = FastAPI(title="OpsNexus API")
 origins = [
     "http://localhost:5173", # Vite default port
     "http://localhost:3000",
+    "*", # Allow Vercel deployments
 ]
 
 app.add_middleware(
@@ -89,13 +90,13 @@ async def export_data(
     e_date = datetime.now()
     data = aggregate_data(s_date, e_date, current_user["company_id"])
     
-    csv_content = generate_csv_export(data)
+    excel_content = generate_excel_export(data)
     
     # Return as download
     return StreamingResponse(
-        io.StringIO(csv_content),
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=export.csv"}
+        io.BytesIO(excel_content),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": "attachment; filename=OpsNexus_Report.xlsx"}
     )
 
 @app.get("/")

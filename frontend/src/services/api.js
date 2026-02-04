@@ -27,7 +27,7 @@ export const fetchDashboardData = async () => {
     return response.data;
 };
 
-export const exportCSV = async () => {
+export const exportExcel = async () => {
     const response = await api.get('/export', {
         responseType: 'blob',
     });

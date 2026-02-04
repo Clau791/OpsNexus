@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { fetchDashboardData, exportCSV } from '../services/api';
-import { Download, AlertCircle, Ticket, LogOut, CheckCircle, XCircle } from 'lucide-react';
+import { fetchDashboardData, exportExcel } from '../services/api';
+import { Download, AlertCircle, Ticket, LogOut, CheckCircle, XCircle, FileSpreadsheet } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function DashboardPage() {
@@ -29,11 +29,11 @@ export default function DashboardPage() {
 
     const handleExport = async () => {
         try {
-            const blob = await exportCSV();
+            const blob = await exportExcel();
             const url = window.URL.createObjectURL(new Blob([blob]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `export_${new Date().toISOString()}.csv`);
+            link.setAttribute('download', `OpsNexus_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
             document.body.appendChild(link);
             link.click();
             link.remove();
@@ -75,10 +75,10 @@ export default function DashboardPage() {
                     </div>
                     <button
                         onClick={handleExport}
-                        className="flex items-center gap-2 bg-primary-600 hover:bg-primary-500 text-white px-5 py-2.5 rounded-xl font-medium shadow-lg shadow-primary-500/20 transition-all active:scale-95"
+                        className="flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white px-5 py-2.5 rounded-xl font-medium shadow-lg shadow-green-500/20 transition-all active:scale-95"
                     >
-                        <Download className="w-4 h-4" />
-                        Export CSV
+                        <FileSpreadsheet className="w-4 h-4" />
+                        Export Excel Report
                     </button>
                 </header>
 
