@@ -4,11 +4,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from datetime import datetime
 import io
-import sys
-import os
-
-# Add current directory to sys.path to allow imports on Vercel
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from auth import authenticate_user, create_access_token, ALGORITHM, SECRET_KEY, FAKE_USERS_DB
 from api_integrations import get_nagios_alerts, get_optimum_tickets
