@@ -1,6 +1,10 @@
 import pandas as pd
 import io
-from api_integrations import get_nagios_alerts, get_optimum_tickets
+# Support both local execution and package import on Vercel.
+try:
+    from .api_integrations import get_nagios_alerts, get_optimum_tickets
+except ImportError:
+    from api_integrations import get_nagios_alerts, get_optimum_tickets
 
 def aggregate_data(start_date, end_date, company_id):
     """

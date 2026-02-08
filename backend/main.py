@@ -5,9 +5,15 @@ from fastapi.responses import StreamingResponse
 from datetime import datetime
 import io
 
-from auth import authenticate_user, create_access_token, SINGLE_USER
-from api_integrations import get_nagios_alerts, get_optimum_tickets, get_mock_reports
-from export_service import aggregate_data, generate_excel_export
+# Support both local execution (`uvicorn main:app`) and package import on Vercel.
+try:
+    from .auth import authenticate_user, create_access_token, SINGLE_USER
+    from .api_integrations import get_nagios_alerts, get_optimum_tickets, get_mock_reports
+    from .export_service import aggregate_data, generate_excel_export
+except ImportError:
+    from auth import authenticate_user, create_access_token, SINGLE_USER
+    from api_integrations import get_nagios_alerts, get_optimum_tickets, get_mock_reports
+    from export_service import aggregate_data, generate_excel_export
 
 app = FastAPI(title="OpsNexus API")
 router = APIRouter()
