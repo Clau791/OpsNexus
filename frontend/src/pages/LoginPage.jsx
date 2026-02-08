@@ -16,7 +16,7 @@ export default function LoginPage() {
             const data = await login(username, password);
             localStorage.setItem('token', data.access_token);
             navigate('/dashboard');
-        } catch (err) {
+        } catch {
             setError('Invalid credentials');
         }
     };

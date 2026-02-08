@@ -57,3 +57,77 @@ def get_optimum_tickets(start_date: datetime, end_date: datetime, company_id: in
         current_date += timedelta(days=1)
         
     return tickets
+
+def get_mock_reports(company_id: int):
+    """
+    Simulates reports fetched from an external reporting API.
+    """
+    now = datetime.utcnow()
+    return [
+        {
+            "id": "RPT-2026-001",
+            "title": "Infrastructure Health Snapshot",
+            "client": "Acme Logistics",
+            "status": "READY",
+            "risk_level": "LOW",
+            "score": 92,
+            "generated_at": (now - timedelta(hours=2)).isoformat(),
+            "source": "Nagios + Optimum",
+            "company_id": company_id,
+        },
+        {
+            "id": "RPT-2026-002",
+            "title": "Endpoint Compliance Audit",
+            "client": "BlueWave Retail",
+            "status": "IN_REVIEW",
+            "risk_level": "MEDIUM",
+            "score": 78,
+            "generated_at": (now - timedelta(days=1, hours=3)).isoformat(),
+            "source": "Security Scanner",
+            "company_id": company_id,
+        },
+        {
+            "id": "RPT-2026-003",
+            "title": "Backup & Recovery Readiness",
+            "client": "Northwind Foods",
+            "status": "READY",
+            "risk_level": "LOW",
+            "score": 88,
+            "generated_at": (now - timedelta(days=2, hours=1)).isoformat(),
+            "source": "Backup Monitor",
+            "company_id": company_id,
+        },
+        {
+            "id": "RPT-2026-004",
+            "title": "Network Segmentation Check",
+            "client": "Evergreen Clinics",
+            "status": "DRAFT",
+            "risk_level": "HIGH",
+            "score": 64,
+            "generated_at": (now - timedelta(days=3, hours=5)).isoformat(),
+            "source": "NMS Collector",
+            "company_id": company_id,
+        },
+        {
+            "id": "RPT-2026-005",
+            "title": "Patch Management Trend",
+            "client": "Starlight Finance",
+            "status": "IN_REVIEW",
+            "risk_level": "MEDIUM",
+            "score": 74,
+            "generated_at": (now - timedelta(days=4)).isoformat(),
+            "source": "Patch API",
+            "company_id": company_id,
+        },
+        {
+            "id": "RPT-2026-006",
+            "title": "Identity & Access Overview",
+            "client": "Delta Manufacturing",
+            "status": "READY",
+            "risk_level": "LOW",
+            "score": 90,
+            "generated_at": (now - timedelta(days=6)).isoformat(),
+            "source": "IAM Events",
+            "company_id": company_id,
+        },
+    ]

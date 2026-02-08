@@ -6,7 +6,7 @@ from datetime import datetime
 import io
 
 from auth import authenticate_user, create_access_token, SINGLE_USER
-from api_integrations import get_nagios_alerts, get_optimum_tickets
+from api_integrations import get_nagios_alerts, get_optimum_tickets, get_mock_reports
 from export_service import aggregate_data, generate_excel_export
 
 app = FastAPI(title="OpsNexus API")
@@ -82,6 +82,16 @@ async def export_data(
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": "attachment; filename=OpsNexus_Report.xlsx"}
     )
+
+@router.get("/reports")
+async def get_reports(
+    current_user: dict = Depends(get_current_user)
+):
+    reports = get_mock_reports(current_user["company_id"])
+    return {
+        "count": len(reports),
+        "reports": reports,
+    }
 
 @router.get("/")
 def read_root():

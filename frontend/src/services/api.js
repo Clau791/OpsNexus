@@ -34,4 +34,9 @@ export const exportExcel = async () => {
     return response.data;
 };
 
+export const fetchReports = async () => {
+    const response = await api.get('/reports');
+    return response.data;
+};
+
 export default api;
