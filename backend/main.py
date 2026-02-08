@@ -1,14 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from datetime import datetime
 import io
 
-from auth import authenticate_user, create_access_token, ALGORITHM, SECRET_KEY, FAKE_USERS_DB
+from auth import authenticate_user, create_access_token, SINGLE_USER
 from api_integrations import get_nagios_alerts, get_optimum_tickets
 from export_service import aggregate_data, generate_excel_export
-import jwt
 
 app = FastAPI(title="OpsNexus API")
 router = APIRouter()
@@ -28,25 +27,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-    except jwt.PyJWTError:
-        raise credentials_exception
-    user = FAKE_USERS_DB.get(username)
-    if user is None:
-        raise credentials_exception
-    return user
+async def get_current_user():
+    # Auth bypass enabled: every request is treated as the same user.
+    return SINGLE_USER
 
 @router.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):

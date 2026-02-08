@@ -6,21 +6,17 @@ SECRET_KEY = "super-secret-key-change-this-in-production"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-# Mock user database
-# In a real app, this would query a database
+# Single-user auth bypass profile used across the app.
+SINGLE_USER = {
+    "username": "single-user",
+    "password": "bypass",
+    "company_id": 1,
+    "role": "manager",
+}
+
+# Kept for backward compatibility with existing imports/usages.
 FAKE_USERS_DB = {
-    "admin": {
-        "username": "admin",
-        "password": "password123", # Plaintext for skeleton simplicity
-        "company_id": 1,
-        "role": "manager"
-    },
-    "manager1": {
-        "username": "manager1",
-        "password": "securepass",
-        "company_id": 101,
-        "role": "manager"
-    }
+    SINGLE_USER["username"]: SINGLE_USER
 }
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
@@ -34,9 +30,5 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 def authenticate_user(username, password):
-    user = FAKE_USERS_DB.get(username)
-    if not user:
-        return False
-    if user["password"] != password:
-        return False
-    return user
+    # Auth bypass enabled: always return the same user.
+    return SINGLE_USER
