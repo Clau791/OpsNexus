@@ -34,29 +34,60 @@ def get_nagios_alerts(start_date: datetime, end_date: datetime, company_id: int)
 def get_optimum_tickets(start_date: datetime, end_date: datetime, company_id: int):
     """
     Simulates fetching tickets from Optimum Desk.
-    Returns a list of dictionaries representing tickets.
+    Returns a stable list of mock tickets as if they came from an API.
     """
-    tickets = []
-    current_date = start_date
-    
-    status_options = ["Open", "In Progress", "Resolved", "Closed"]
-    
-    # Generate random tickets within the date range
-    while current_date <= end_date:
-        # 0 to 3 tickets per day
-        daily_tickets_count = random.randint(0, 3)
-        for _ in range(daily_tickets_count):
-            ticket = {
-                "id": random.randint(10000, 99999),
-                "created_at": current_date.isoformat(),
-                "subject": f"Issue with {random.choice(['email', 'printer', 'network', 'vpn'])}",
-                "status": random.choice(status_options),
-                "company_id": company_id
-            }
-            tickets.append(ticket)
-        current_date += timedelta(days=1)
-        
-    return tickets
+    now = datetime.utcnow()
+    return [
+        {
+            "id": 38102,
+            "created_at": (now - timedelta(hours=1)).isoformat(),
+            "subject": "VPN drops every 20 minutes for remote users",
+            "status": "Open",
+            "company_id": company_id,
+        },
+        {
+            "id": 38101,
+            "created_at": (now - timedelta(hours=6)).isoformat(),
+            "subject": "Shared printer queue blocked on floor 2",
+            "status": "In Progress",
+            "company_id": company_id,
+        },
+        {
+            "id": 38096,
+            "created_at": (now - timedelta(days=1, hours=2)).isoformat(),
+            "subject": "Outgoing mail delayed for finance mailbox",
+            "status": "In Progress",
+            "company_id": company_id,
+        },
+        {
+            "id": 38090,
+            "created_at": (now - timedelta(days=1, hours=8)).isoformat(),
+            "subject": "NAS backup job exceeded retention window",
+            "status": "Resolved",
+            "company_id": company_id,
+        },
+        {
+            "id": 38083,
+            "created_at": (now - timedelta(days=2, hours=3)).isoformat(),
+            "subject": "Wi-Fi coverage weak in meeting room C",
+            "status": "Resolved",
+            "company_id": company_id,
+        },
+        {
+            "id": 38078,
+            "created_at": (now - timedelta(days=3)).isoformat(),
+            "subject": "Password reset portal timeout",
+            "status": "Closed",
+            "company_id": company_id,
+        },
+        {
+            "id": 38072,
+            "created_at": (now - timedelta(days=3, hours=10)).isoformat(),
+            "subject": "License activation failed on CAD workstation",
+            "status": "Closed",
+            "company_id": company_id,
+        },
+    ]
 
 def get_mock_reports(company_id: int):
     """
